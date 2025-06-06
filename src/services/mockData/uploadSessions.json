@@ -1,0 +1,152 @@
+[
+  {
+    "id": "session_1",
+    "files": [
+      {
+        "id": "1",
+        "name": "presentation-slides.pdf",
+        "size": 2048576,
+        "type": "application/pdf",
+        "uploadedAt": "2024-01-15T09:30:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400"
+      },
+      {
+        "id": "2",
+        "name": "team-photo.jpg",
+        "size": 1536000,
+        "type": "image/jpeg",
+        "uploadedAt": "2024-01-15T09:35:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400"
+      }
+    ],
+    "startTime": "2024-01-15T09:30:00Z",
+    "totalSize": 3584576,
+    "completed": true
+  },
+  {
+    "id": "session_2",
+    "files": [
+      {
+        "id": "3",
+        "name": "project-demo.mp4",
+        "size": 15728640,
+        "type": "video/mp4",
+        "uploadedAt": "2024-01-14T11:15:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=400"
+      }
+    ],
+    "startTime": "2024-01-14T11:15:00Z",
+    "totalSize": 15728640,
+    "completed": true
+  },
+  {
+    "id": "session_3",
+    "files": [
+      {
+        "id": "4",
+        "name": "logo-design.png",
+        "size": 512000,
+        "type": "image/png",
+        "uploadedAt": "2024-01-13T16:45:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400"
+      },
+      {
+        "id": "5",
+        "name": "requirements-doc.docx",
+        "size": 256000,
+        "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "uploadedAt": "2024-01-13T16:50:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1568667256549-094345857637?w=400"
+      },
+      {
+        "id": "6",
+        "name": "background-music.mp3",
+        "size": 4194304,
+        "type": "audio/mp3",
+        "uploadedAt": "2024-01-13T16:55:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400"
+      }
+    ],
+    "startTime": "2024-01-13T16:45:00Z",
+    "totalSize": 4962304,
+    "completed": true
+  },
+  {
+    "id": "session_4",
+    "files": [
+      {
+        "id": "7",
+        "name": "wireframes.png",
+        "size": 1024000,
+        "type": "image/png",
+        "uploadedAt": "2024-01-12T09:10:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400"
+      },
+      {
+        "id": "8",
+        "name": "user-guide.pdf",
+        "size": 1792000,
+        "type": "application/pdf",
+        "uploadedAt": "2024-01-12T09:15:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?w=400"
+      }
+    ],
+    "startTime": "2024-01-12T09:10:00Z",
+    "totalSize": 2816000,
+    "completed": true
+  },
+  {
+    "id": "session_5",
+    "files": [
+      {
+        "id": "9",
+        "name": "product-screenshot.jpg",
+        "size": 896000,
+        "type": "image/jpeg",
+        "uploadedAt": "2024-01-11T12:40:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400"
+      },
+      {
+        "id": "10",
+        "name": "meeting-notes.txt",
+        "size": 8192,
+        "type": "text/plain",
+        "uploadedAt": "2024-01-11T12:45:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
+      },
+      {
+        "id": "11",
+        "name": "feature-mockup.webp",
+        "size": 672000,
+        "type": "image/webp",
+        "uploadedAt": "2024-01-11T12:50:00Z",
+        "status": "completed",
+        "progress": 100,
+        "url": "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400"
+      }
+    ],
+    "startTime": "2024-01-11T12:40:00Z",
+    "totalSize": 1576192,
+    "completed": true
+  }
+]
