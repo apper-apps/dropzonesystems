@@ -351,11 +351,10 @@ const isImageFile = (type) => type?.startsWith('image/')
               <ApperIcon name="List" className="w-5 h-5" />
             </button>
           </div>
-        </div>
+</div>
 
         {/* Files Display */}
         {filteredFiles?.length === 0 ? (
-{filteredFiles?.length === 0 ? (
           <div className="text-center py-12">
             <ApperIcon name="FileX" className="w-16 h-16 text-surface-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-surface-900 dark:text-surface-50 mb-2">
@@ -370,12 +369,10 @@ const isImageFile = (type) => type?.startsWith('image/')
             viewMode === 'grid' 
               ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'
               : 'space-y-3'
-}>
+          }>
             {filteredFiles?.map((file) => (
               <motion.div
                 key={file.id}
-                layout
-key={file.id}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -460,15 +457,13 @@ key={file.id}
                     >
                       <ApperIcon name="Trash2" className="w-4 h-4" />
                     </button>
-                  </div>
+</div>
                 </>
-)}
+              )}
               </motion.div>
             ))}
           </div>
         )}
-)}
-
         {/* File Preview Modal */}
         <AnimatePresence>
           {previewFile && (
