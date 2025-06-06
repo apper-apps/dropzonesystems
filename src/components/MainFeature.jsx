@@ -2,14 +2,17 @@ import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'react-toastify'
 import ApperIcon from './ApperIcon'
+import FolderTree from './FolderTree'
 import { fileService } from '../services'
 import { format } from 'date-fns'
 
 const MainFeature = ({ files, onFilesUpdate }) => {
-  const [isDragging, setIsDragging] = useState(false)
+const [isDragging, setIsDragging] = useState(false)
   const [uploadingFiles, setUploadingFiles] = useState([])
   const [previewFile, setPreviewFile] = useState(null)
   const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
+  const [selectedFolderId, setSelectedFolderId] = useState(null)
+  const [showSidebar, setShowSidebar] = useState(true)
   const fileInputRef = useRef(null)
 
   const allowedTypes = [
@@ -114,13 +117,14 @@ const MainFeature = ({ files, onFilesUpdate }) => {
         updateProgress(i)
       }
 
-      // Create file object for service
+// Create file object for service
       const fileData = {
         name: file.name,
         size: file.size,
         type: file.type,
         status: 'completed',
         progress: 100,
+        folderId: selectedFolderId, // Associate with selected folder
         url: URL.createObjectURL(file) // In real app, this would be server URL
       }
 
@@ -165,14 +169,60 @@ const MainFeature = ({ files, onFilesUpdate }) => {
     if (type === 'application/pdf') return 'FileText'
     return 'File'
   }
+const isImageFile = (type) => type?.startsWith('image/')
 
-  const isImageFile = (type) => type?.startsWith('image/')
+  // Filter files based on selected folder
+  const filteredFiles = selectedFolderId === null 
+    ? files
+    : files?.filter(file => file.folderId === selectedFolderId) || []
+
+  const handleFolderSelect = (folderId) => {
+    setSelectedFolderId(folderId)
+  }
 
   return (
-    <div className="space-y-8">
-      {/* Upload Zone */}
-      <motion.div
-        className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
+    <div className="flex gap-6">
+      {/* Sidebar */}
+      <AnimatePresence>
+        {showSidebar && (
+          <motion.div
+            initial={{ x: -300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-80 flex-shrink-0"
+          >
+            <FolderTree 
+              selectedFolderId={selectedFolderId}
+              onFolderSelect={handleFolderSelect}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Main Content */}
+      <div className="flex-1 min-w-0 space-y-8">
+        {/* Sidebar Toggle */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="p-2 bg-surface-100 dark:bg-surface-700 hover:bg-surface-200 dark:hover:bg-surface-600 rounded-lg transition-colors"
+          >
+            <ApperIcon 
+              name={showSidebar ? "PanelLeftClose" : "PanelLeftOpen"} 
+              className="w-5 h-5 text-surface-600 dark:text-surface-300" 
+            />
+          </button>
+          {selectedFolderId && (
+            <div className="flex items-center space-x-2 text-sm text-surface-600 dark:text-surface-300">
+              <ApperIcon name="Folder" className="w-4 h-4" />
+              <span>Folder: {selectedFolderId}</span>
+            </div>
+          )}
+        </div>
+{/* Upload Zone */}
+        <motion.div
+          className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
           isDragging 
             ? 'border-primary bg-primary/5 scale-105' 
             : 'border-surface-300 dark:border-surface-600 hover:border-primary/50'
@@ -226,11 +276,11 @@ const MainFeature = ({ files, onFilesUpdate }) => {
           onChange={handleFileInput}
           accept={allowedTypes.join(',')}
         />
-      </motion.div>
+</motion.div>
 
-      {/* Upload Progress */}
-      <AnimatePresence>
-        {uploadingFiles.length > 0 && (
+        {/* Upload Progress */}
+        <AnimatePresence>
+          {uploadingFiles.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -263,67 +313,77 @@ const MainFeature = ({ files, onFilesUpdate }) => {
                 </div>
               ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+</motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* File Management Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-surface-900 dark:text-surface-50">
-          Your Files ({files?.length || 0})
-        </h2>
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => setViewMode('grid')}
-            className={`p-2 rounded-lg transition-colors ${
-              viewMode === 'grid' 
-                ? 'bg-primary text-white' 
-                : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300'
-            }`}
-          >
-            <ApperIcon name="Grid3X3" className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => setViewMode('list')}
-            className={`p-2 rounded-lg transition-colors ${
-              viewMode === 'list' 
-                ? 'bg-primary text-white' 
-                : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300'
-            }`}
-          >
-            <ApperIcon name="List" className="w-5 h-5" />
-          </button>
-        </div>
-      </div>
-
-      {/* Files Display */}
-      {files?.length === 0 ? (
-        <div className="text-center py-12">
-          <ApperIcon name="FileX" className="w-16 h-16 text-surface-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-surface-900 dark:text-surface-50 mb-2">
-            No files uploaded yet
-          </h3>
-          <p className="text-surface-600 dark:text-surface-300">
-            Upload your first file to get started
-          </p>
-        </div>
-      ) : (
-        <div className={
-          viewMode === 'grid' 
-            ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'
-            : 'space-y-3'
-        }>
-          {files?.map((file) => (
-            <motion.div
-              key={file.id}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.02 }}
-              className={`bg-white dark:bg-surface-800 rounded-xl shadow-card overflow-hidden ${
-                viewMode === 'list' ? 'flex items-center p-4' : 'p-4'
+        {/* File Management Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-semibold text-surface-900 dark:text-surface-50">
+              {selectedFolderId === null ? 'All Files' : 'Folder Files'} ({filteredFiles?.length || 0})
+            </h2>
+            {selectedFolderId !== null && (
+              <p className="text-sm text-surface-500 dark:text-surface-400 mt-1">
+                Showing files in selected folder
+              </p>
+            )}
+</div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-lg transition-colors ${
+                viewMode === 'grid' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300'
               }`}
             >
+              <ApperIcon name="Grid3X3" className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-lg transition-colors ${
+                viewMode === 'list' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300'
+              }`}
+            >
+              <ApperIcon name="List" className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Files Display */}
+        {filteredFiles?.length === 0 ? (
+{filteredFiles?.length === 0 ? (
+          <div className="text-center py-12">
+            <ApperIcon name="FileX" className="w-16 h-16 text-surface-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-surface-900 dark:text-surface-50 mb-2">
+              {selectedFolderId === null ? 'No files uploaded yet' : 'No files in this folder'}
+            </h3>
+            <p className="text-surface-600 dark:text-surface-300">
+              {selectedFolderId === null ? 'Upload your first file to get started' : 'Upload files to this folder or select a different folder'}
+            </p>
+          </div>
+        ) : (
+          <div className={
+            viewMode === 'grid' 
+              ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'
+              : 'space-y-3'
+}>
+            {filteredFiles?.map((file) => (
+              <motion.div
+                key={file.id}
+                layout
+key={file.id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                className={`bg-white dark:bg-surface-800 rounded-xl shadow-card overflow-hidden ${
+                  viewMode === 'list' ? 'flex items-center p-4' : 'p-4'
+                }`}
+              >
               {viewMode === 'grid' ? (
                 <>
                   <div className="aspect-square bg-surface-100 dark:bg-surface-700 rounded-lg mb-3 flex items-center justify-center overflow-hidden">
@@ -402,51 +462,53 @@ const MainFeature = ({ files, onFilesUpdate }) => {
                     </button>
                   </div>
                 </>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      )}
-
-      {/* File Preview Modal */}
-      <AnimatePresence>
-        {previewFile && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-            onClick={() => setPreviewFile(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-surface-800 rounded-xl max-w-4xl max-h-[90vh] overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between p-4 border-b border-surface-200 dark:border-surface-700">
-                <h3 className="font-semibold text-surface-900 dark:text-surface-50">
-                  {previewFile.name}
-                </h3>
-                <button
-                  onClick={() => setPreviewFile(null)}
-                  className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg transition-colors"
-                >
-                  <ApperIcon name="X" className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="p-4">
-                <img
-                  src={previewFile.url}
-                  alt={previewFile.name}
-                  className="max-w-full max-h-[70vh] object-contain mx-auto"
-                />
-              </div>
-            </motion.div>
-          </motion.div>
+)}
+              </motion.div>
+            ))}
+          </div>
         )}
-      </AnimatePresence>
+)}
+
+        {/* File Preview Modal */}
+        <AnimatePresence>
+          {previewFile && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+              onClick={() => setPreviewFile(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white dark:bg-surface-800 rounded-xl max-w-4xl max-h-[90vh] overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between p-4 border-b border-surface-200 dark:border-surface-700">
+                  <h3 className="font-semibold text-surface-900 dark:text-surface-50">
+                    {previewFile.name}
+                  </h3>
+                  <button
+                    onClick={() => setPreviewFile(null)}
+                    className="p-2 hover:bg-surface-100 dark:hover:bg-surface-700 rounded-lg transition-colors"
+                  >
+                    <ApperIcon name="X" className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="p-4">
+                  <img
+                    src={previewFile.url}
+                    alt={previewFile.name}
+                    className="max-w-full max-h-[70vh] object-contain mx-auto"
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

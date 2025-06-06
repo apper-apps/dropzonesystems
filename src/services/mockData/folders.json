@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "Documents",
+    "parentId": null,
+    "isExpanded": true,
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Images",
+    "parentId": null,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:31:00Z",
+    "updatedAt": "2024-01-15T10:31:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Videos",
+    "parentId": null,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:32:00Z",
+    "updatedAt": "2024-01-15T10:32:00Z"
+  },
+  {
+    "id": 4,
+    "name": "Work",
+    "parentId": 1,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:33:00Z",
+    "updatedAt": "2024-01-15T10:33:00Z"
+  },
+  {
+    "id": 5,
+    "name": "Personal",
+    "parentId": 1,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:34:00Z",
+    "updatedAt": "2024-01-15T10:34:00Z"
+  },
+  {
+    "id": 6,
+    "name": "Screenshots",
+    "parentId": 2,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:35:00Z",
+    "updatedAt": "2024-01-15T10:35:00Z"
+  },
+  {
+    "id": 7,
+    "name": "Photos",
+    "parentId": 2,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:36:00Z",
+    "updatedAt": "2024-01-15T10:36:00Z"
+  },
+  {
+    "id": 8,
+    "name": "Projects",
+    "parentId": 4,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:37:00Z",
+    "updatedAt": "2024-01-15T10:37:00Z"
+  },
+  {
+    "id": 9,
+    "name": "Reports",
+    "parentId": 4,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:38:00Z",
+    "updatedAt": "2024-01-15T10:38:00Z"
+  },
+  {
+    "id": 10,
+    "name": "Tutorials",
+    "parentId": 3,
+    "isExpanded": false,
+    "createdAt": "2024-01-15T10:39:00Z",
+    "updatedAt": "2024-01-15T10:39:00Z"
+  }
+]
